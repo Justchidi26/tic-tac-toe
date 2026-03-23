@@ -37,8 +37,18 @@ export default function Board() {
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
   }
+    //Let them know who won
+  const winner = calculateWinner(squares);
+  let status;
+  if (winner) {
+    status = "Congratulations!!! Winner is " + winner;
+  } else {
+    status = "Next player is " + (xIsNext ? "X" : "O");
+  }
+
   return (
     <>
+      <div className="status">{status}</div> {/*Display the next player or winner */}
       <div className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         {/* An arrow function  is added => */}
@@ -59,4 +69,34 @@ export default function Board() {
       </div>
     </>
   );
+}
+
+function calculateWinner(squares) {
+  // All possible winning combinations (rows, columns, diagonals)
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  // Loop through each winning combination
+  for (let i = 0; i < lines.length; i++) {
+    // Destructure the indices for the current combination
+    const [a, b, c] = lines[i];
+
+    // Check if:
+    // 1. The first square is not empty (truthy)
+    // 2. All three squares have the same value (X or O)
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      // If a winning combination is found, return the winner (X or O)
+      return squares[a];
+    }
+  }
+
+  // If no winner is found, return null
+  return null;
 }
