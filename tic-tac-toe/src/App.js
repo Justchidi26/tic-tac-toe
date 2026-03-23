@@ -25,7 +25,7 @@ export default function Board() {
   const [squares, setSquares] = useState(Array(9).fill(null));
 
   function handleClick(i) {
-    if (squares[i]) {
+    if (squares[i] || calculateWinner(squares)) {
       return; // To check if an X or O exits in the box
     }
     const nextSquares = squares.slice();
@@ -37,7 +37,8 @@ export default function Board() {
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
   }
-    //Let them know who won
+
+  //Let them know who won
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
